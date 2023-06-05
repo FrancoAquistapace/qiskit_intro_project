@@ -20,7 +20,21 @@ from qiskit.circuit.library.standard_gates import ZGate
 
 # Auxiliary function to turn string of bits into int
 def bit_string_to_int(bit_string):
-    return
+    '''
+    Params:
+        bit_string : str
+            String containing only 1s and 0s.
+    Returns:
+        Integer value associated to the string
+        of bits given.
+    '''
+    # Init int value
+    int_val = 0
+    # Add corresponding power of 2 for each bit
+    for i in range(len(bit_string)):
+        bit_i = int(bit_string[-1-i])
+        int_val += int(bit_i * (2 ** i))
+    return int_val
 
 # Define builder function
 def build_oracle_from_string(bit_string):
@@ -81,7 +95,7 @@ def run_oracle(oracle, bit_string):
     print('\nOracle circuit:')
     print(oracle.draw('text'))
     # Print phase of the given bit_string
-    bit_2_int = int(bit_string)
+    bit_2_int = bit_string_to_int(bit_string)
     print(bit_2_int)
     # Print results
     print('Simulation results:', counts)
