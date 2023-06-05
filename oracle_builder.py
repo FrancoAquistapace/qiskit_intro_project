@@ -16,6 +16,7 @@
 
 # Import modules
 from qiskit import QuantumCircuit, Aer, transpile
+from qiskit.circuit.library.standard_gates import ZGate
 
 # Define builder function
 def build_oracle_from_string(bit_string):
@@ -28,5 +29,16 @@ def build_oracle_from_string(bit_string):
         QuantumCircuit object that implements the oracle for which
         bit_string is the solution.
     '''
+    # Initialize quantum circuit, using as many qubits as needed
+    oracle = QuantumCircuit(len(bit_string))
 
-    print(bit_string)
+    # We need to apply some logic to build the oracle, so 
+    # that its correct answer is given by bit_string
+
+    # Build custom gate that applies a cz operation on system state
+    # when all qubits are in state | 1 >
+    custom_cz = ZGate().control(len(bit_string) - 1)
+    oracle.append(custom_cz, [i for i in range(len(bit_string))])
+
+    
+    return oracle
