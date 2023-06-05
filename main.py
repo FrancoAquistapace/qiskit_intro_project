@@ -35,7 +35,7 @@ while not bit_in == '':
     # Apply builder function
     oracle = build_oracle_from_string(bit_in)
     # Run simulation
-    unitary = run_oracle(oracle)
+    unitary = run_oracle(oracle, bit_in)
     
     # Ask for new input
     bit_in = input(input_msg,)
