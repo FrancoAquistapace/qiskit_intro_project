@@ -13,3 +13,20 @@
 #   limitations under the License.
 
 # This file contains the oracle_builder application
+
+# Import modules
+from qiskit import QuantumCircuit, Aer, transpile
+
+# Define builder function
+def build_oracle_from_string(bit_string):
+    '''
+    Params:
+        bit_string : str
+            String containing the bits that act as the solution
+            of the oracle.
+    Returns:
+        QuantumCircuit object that implements the oracle for which
+        bit_string is the solution.
+    '''
+
+    print(bit_string)

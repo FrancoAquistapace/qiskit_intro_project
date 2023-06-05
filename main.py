@@ -15,3 +15,25 @@
 # This file launches the oracle_builder application
 
 # Import app
+from oracle_builder import build_oracle_from_string
+
+# Ask user for initial input
+input_msg = '\nInsert a bit string or press ENTER to exit: '
+bit_in = input(input_msg,) 
+# Define main loop
+while not bit_in == '':
+    # Check that the input is allowed
+    test_in = bit_in
+    test_in = test_in.replace('1','')
+    test_in = test_in.replace('0','')
+    if len(test_in) > 0:
+        print('Input must only contain 1s and 0s.')
+        # Ask for new input
+        bit_in = input(input_msg,)
+        continue
+    
+    # Ask for new input
+    bit_in = input(input_msg,)
+
+# Finish process
+exit()
