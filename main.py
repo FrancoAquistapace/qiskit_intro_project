@@ -32,8 +32,12 @@ while not bit_in == '':
         bit_in = input(input_msg,)
         continue
     
+    # Apply builder function
+    build_oracle_from_string(bit_in)
+    
     # Ask for new input
     bit_in = input(input_msg,)
 
 # Finish process
+print('Process finalised')
 exit()
