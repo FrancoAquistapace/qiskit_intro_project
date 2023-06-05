@@ -15,7 +15,7 @@
 # This file launches the oracle_builder application
 
 # Import app
-from oracle_builder import build_oracle_from_string
+from oracle_builder import build_oracle_from_string, run_oracle
 
 # Ask user for initial input
 input_msg = '\nInsert a bit string or press ENTER to exit: '
@@ -33,7 +33,9 @@ while not bit_in == '':
         continue
     
     # Apply builder function
-    build_oracle_from_string(bit_in)
+    oracle = build_oracle_from_string(bit_in)
+    # Run simulation
+    unitary = run_oracle(oracle)
     
     # Ask for new input
     bit_in = input(input_msg,)

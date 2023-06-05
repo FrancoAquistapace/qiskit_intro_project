@@ -40,5 +40,46 @@ def build_oracle_from_string(bit_string):
     custom_cz = ZGate().control(len(bit_string) - 1)
     oracle.append(custom_cz, [i for i in range(len(bit_string))])
 
+    # Add measurements
+    oracle.measure_all()
     
     return oracle
+
+
+# Define function to run a simulation on the oracle circuit
+def run_oracle(oracle, bit_string):
+    '''
+    Params:
+        oracle : QuantumCircuit
+            Oracle circuit to be simulated.
+        bit_string : str
+            String of bits that is the answer to the oracle.
+    Returns:
+        Prints the oracle circuit and the results for the 
+        simulation of the circuit. If the oracle circuit is
+        correctly built, the results should match the user 
+        input exactly.
+        Also returns the resulting unitary matrix for optional 
+        post-processing.
+    '''
+    # Copy oracle and save unitary matrix
+    oracle = oracle.copy()
+    oracle.save_unitary()
+    # Initialize backend
+    backend = Aer.get_backend('aer_simulator')
+
+    # Run simulation on the oracle circuit and
+    # get results
+    result = backend.run(oracle).result()
+    # Get counts and unitary matrix
+    counts = result.get_counts()
+    unitary = result.get_unitary()
+
+    # Print circuit
+    print('\nOracle circuit:')
+    print(oracle.draw('text'))
+    # Print phase of the given bit_string
+
+    # Print results
+    print('Simulation results:', counts)
+    return unitary
