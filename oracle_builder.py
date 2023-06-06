@@ -52,12 +52,11 @@ def run_oracle(oracle, bit_string):
         bit_string : str
             String of bits that is the answer to the oracle.
     Returns:
-        Prints the oracle circuit and the results for the 
+        Prints the oracle circuit and the best result for the 
         simulation of the circuit. If the oracle circuit is
         correctly built, the results should match the user 
         input exactly.
-        Also returns the resulting unitary matrix for optional 
-        post-processing.
+        Also returns the best result for optional post-processing.
     '''
     # Initialize backend
     backend = Aer.get_backend('aer_simulator')
@@ -83,4 +82,4 @@ def run_oracle(oracle, bit_string):
     print(oracle.draw('text'))
     # Print winner result
     print('Best result:', best_key)
-    return unitary
+    return best_key
