@@ -34,11 +34,23 @@ def build_oracle_from_string(bit_string):
 
     # We need to apply some logic to build the oracle, so 
     # that its correct answer is given by bit_string
+    for i in range(len(bit_string)):
+        bit_i = int(bit_string[-1-i])
+        # If bit is 0 apply not gate
+        if bit_i == 0:
+            oracle.x(i)
 
     # Build custom gate that applies a cz operation on system state
     # when all qubits are in state | 1 >
     custom_cz = ZGate().control(len(bit_string) - 1)
     oracle.append(custom_cz, [i for i in range(len(bit_string))])
+
+    # Reverse encoding logic
+    for i in range(len(bit_string)):
+        bit_i = int(bit_string[-1-i])
+        # If bit is 0 apply not gate
+        if bit_i == 0:
+            oracle.x(i)
     
     return oracle
 
@@ -72,7 +84,7 @@ def run_oracle(oracle, bit_string):
     # Find max result
     best_count = 0 
     best_key = 0
-    for key in counts.keys:
+    for key in counts:
         if best_count < counts[key]:
             best_count = counts[key]
             best_key = key
