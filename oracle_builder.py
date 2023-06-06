@@ -18,6 +18,21 @@
 from qiskit import QuantumCircuit, Aer, transpile
 from qiskit.circuit.library.standard_gates import ZGate
 
+# Auxiliary function to get multi-cz gate
+def build_multi_cz(N):
+    '''
+    Params:
+        N : int
+            Amount of qubits to be used in the gate
+    Returns:
+        Qiskit Gate that acts as a controled z in 
+        which the overall phase is multiplied by 
+        -1 when all qubits are in state |1>.
+    '''
+    custom_cz = ZGate().control(N - 1)
+    return custom_cz
+
+
 # Define builder function
 def build_oracle_from_string(bit_string):
     '''
@@ -42,7 +57,7 @@ def build_oracle_from_string(bit_string):
 
     # Build custom gate that applies a cz operation on system state
     # when all qubits are in state | 1 >
-    custom_cz = ZGate().control(len(bit_string) - 1)
+    custom_cz = build_multi_cz(len(bit_string))
     oracle.append(custom_cz, [i for i in range(len(bit_string))])
 
     # Reverse encoding logic
@@ -72,10 +87,18 @@ def run_oracle(oracle, bit_string):
     '''
     # Initialize backend
     backend = Aer.get_backend('aer_simulator')
+
+    # Define initial state
+    init_s = QuantumCircuit(len(bit_string))
+    init_s.h([i for i in range(len(bit_string))])
+
     # Make a copy of the oracle
     qc = oracle.copy()
     # Add measurements to copy 
     qc.measure_all()
+
+    # Build diffuser
+    diffuser = QuantumCircuit(len(bit_string))
 
     # Run simulation on the oracle circuit and
     # get counts and unitary matrix
