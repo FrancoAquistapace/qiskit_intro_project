@@ -80,9 +80,9 @@ def run_oracle(oracle, bit_string):
             String of bits that is the answer to the oracle.
     Returns:
         Prints the oracle circuit and the best result for the 
-        simulation of the circuit. If the oracle circuit is
-        correctly built, the results should match the user 
-        input exactly.
+        simulation of the circuit using Grovers algorithm. 
+        If the oracle circuit is correctly built, the results 
+        should match the user input exactly.
         Also returns the best result for optional post-processing.
     '''
     # Initialize backend
