@@ -95,11 +95,6 @@ def run_oracle(oracle, bit_string):
     init_s = QuantumCircuit(len(bit_string))
     init_s.h(qubits_list)
 
-    # Make a copy of the oracle
-    qc = oracle.copy()
-    # Add measurements to copy 
-    qc.measure_all()
-
     # Build diffuser
     diffuser = QuantumCircuit(len(bit_string))
     diffuser.h(qubits_list)
@@ -109,10 +104,16 @@ def run_oracle(oracle, bit_string):
     diffuser.x(qubits_list)
     diffuser.h(qubits_list)
 
+    # Define Grover's algorithm circuit
+    grover = QuantumCircuit(len(bit_string))
+    grover = grover.compose(init_s)
+    grover = grover.compose(oracle)
+    grover = grover.compose(diffuser)
+    grover.measure_all()
 
     # Run simulation on the oracle circuit and
     # get counts and unitary matrix
-    t_qc = transpile(qc, backend)
+    t_qc = transpile(grover, backend)
     counts = backend.run(t_qc).result().get_counts()
     # Find max result
     best_count = 0 
