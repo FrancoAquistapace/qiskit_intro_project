@@ -88,9 +88,12 @@ def run_oracle(oracle, bit_string):
     # Initialize backend
     backend = Aer.get_backend('aer_simulator')
 
+    # Define list of qubits
+    qubits_list = [i for i in range(len(bit_string))]
+
     # Define initial state
     init_s = QuantumCircuit(len(bit_string))
-    init_s.h([i for i in range(len(bit_string))])
+    init_s.h(qubits_list)
 
     # Make a copy of the oracle
     qc = oracle.copy()
@@ -99,6 +102,13 @@ def run_oracle(oracle, bit_string):
 
     # Build diffuser
     diffuser = QuantumCircuit(len(bit_string))
+    diffuser.h(qubits_list)
+    diffuser.x(qubits_list)
+    custom_cz = build_multi_cz(len(bit_string))
+    diffuser.append(custom_cz, qubits_list)
+    diffuser.x(qubits_list)
+    diffuser.h(qubits_list)
+
 
     # Run simulation on the oracle circuit and
     # get counts and unitary matrix
